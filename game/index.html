@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Star Drifter · Pulse demo game</title>
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Star Drifter <span class="release">v1.0.3</span></h1>
+      <a id="dashboard-link" href="http://localhost:5173" target="pulse-dashboard">Open dashboard ↗</a>
+    </header>
+
+    <canvas id="game" width="720" height="400"></canvas>
+
+    <section class="controls" aria-label="Break the game">
+      <button data-action="null-ref">
+        <strong>Null reference</strong><small>TypeError in the game loop</small>
+      </button>
+      <button data-action="rejection">
+        <strong>Promise rejection</strong><small>Unhandled async failure</small>
+      </button>
+      <button data-action="fetch">
+        <strong>Failing fetch</strong><small>404 from /api/leaderboard</small>
+      </button>
+      <button data-action="storm" class="danger">
+        <strong>Error storm</strong><small>200 errors in 1 second</small>
+      </button>
+    </section>
+
+    <section class="sdk">
+      <label class="toggle">
+        <input type="checkbox" id="dedupe" checked>
+        <span>Client-side dedupe <small>(turn off to see the server rate limit kick in)</small></span>
+      </label>
+      <dl>
+        <div><dt>Captured</dt><dd data-stat="captured">0</dd></div>
+        <div><dt>Deduped</dt><dd data-stat="deduped">0</dd></div>
+        <div><dt>Sent</dt><dd data-stat="sent">0</dd></div>
+        <div><dt>Rate limited</dt><dd data-stat="rateLimited">0</dd></div>
+        <div><dt>Dropped</dt><dd data-stat="dropped">0</dd></div>
+      </dl>
+      <p class="session">SDK session <code id="session"></code></p>
+    </section>
+  </main>
+
+  <script src="../sdk/errors-sdk.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

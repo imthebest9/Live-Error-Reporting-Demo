@@ -1,0 +1,32 @@
+# One command: docker compose up --build
+#   game       http://localhost:8081   (throws errors on purpose)
+#   dashboard  http://localhost:5173   (watches them arrive)
+#   api        http://localhost:5080   (ingest + REST + SignalR)
+services:
+  api:
+    build: ./api
+    ports:
+      - "5080:8080"
+    volumes:
+      - pulse-data:/data
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+  # The game is just static files, so it runs on stock nginx with the folders mounted in.
+  # It is a separate origin from the API on purpose, like a real customer's site would be.
+  game:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - ./game:/usr/share/nginx/html/game:ro
+      - ./sdk:/usr/share/nginx/html/sdk:ro
+      - ./docker/game.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  pulse-data:
